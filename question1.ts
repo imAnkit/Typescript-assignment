@@ -36,7 +36,7 @@ function updateStock(
     return inventory;
   }
 
-  inventory.map((pr) => {
+  return inventory.map((pr) => {
     if (pr.id !== productId) return pr;
 
     if (quantityChange < 0) {
@@ -45,8 +45,6 @@ function updateStock(
     const newQuantityInStock = pr.quantityInStock + quantityChange;
     return { ...pr, quantityInStock: newQuantityInStock };
   });
-
-  return inventory;
 }
 
 function getTotalInventoryValue(inventory: Inventory): number {
@@ -54,3 +52,33 @@ function getTotalInventoryValue(inventory: Inventory): number {
     return totalPrice + product.price * product.quantityInStock;
   }, 0);
 }
+
+const apple: Product = { id: 0, name: "apple", price: 10, quantityInStock: 15 };
+const banana: Product = {
+  id: 1,
+  name: "banana",
+  price: 30,
+  quantityInStock: 12,
+};
+
+let inventory: Inventory = [];
+
+inventory = addProduct(inventory, apple);
+inventory = addProduct(inventory, banana);
+
+inventory = addProduct(inventory, {
+  id: 1,
+  name: "mango",
+  price: 50,
+  quantityInStock: 3,
+});
+
+inventory = updateStock(inventory, 1, 1);
+
+inventory = updateStock(inventory, 0, -3);
+
+inventory = updateStock(inventory, 100, 100);
+
+const totalPrice = getTotalInventoryValue(inventory);
+console.log(totalPrice);
+export {};
